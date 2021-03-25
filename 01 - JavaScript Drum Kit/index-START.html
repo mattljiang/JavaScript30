@@ -58,7 +58,30 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('keydown', playSound);
+    const keys = document.querySelectorAll('.key');
+    keys.forEach((key) => key.addEventListener('transitionend', endTransition));
+  })
+  
+  const playSound = (e) => {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}`);
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play();
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    key.classList.add('playing');
+    
+    // // setTimeout is not ideal because you have 70ms in two places which could be out of sync. so use transitionend instead
+    // setTimeout(() => {key.classList.remove('playing')}, 70)
+  }
 
+  // not arrow function so that we can access 'this' of the key
+  function endTransition(e) {
+    // many transitionend events, so only run on the last event
+    if (e.propertyName !== 'transform') return;
+    this.classList.remove('playing');
+  }
 </script>
 
 
