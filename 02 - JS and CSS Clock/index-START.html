@@ -10,7 +10,7 @@
     <div class="clock">
       <div class="clock-face">
         <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
+        <div class="hand minute-hand"></div>
         <div class="hand second-hand"></div>
       </div>
     </div>
@@ -62,12 +62,52 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+    }
+    
+    .second-hand {
+      background: red;
+    }
+    
+    .hour-hand {
+      left: 15%;
+      width: 35%;
+      transform: rotate(0deg);
     }
 
   </style>
 
   <script>
+    const hourHand = document.querySelector('.hour-hand');
+    const minuteHand = document.querySelector('.minute-hand');
+    const secondHand = document.querySelector('.second-hand');
+    
+    // get the current time and set starting positions
+    let [hour, minute, second] = new Date().toLocaleTimeString('en-US').split(/:| /);
+    hour = Number(hour);
+    minute = Number(minute);
+    second = Number(second);
+    const setSecond = () => secondHand.setAttribute('style', `transform: rotate(${90 + second/60*360}deg)`);
+    const setMinute = () => minuteHand.setAttribute('style', `transform: rotate(${90 + minute/60*360}deg)`);
+    const setHour = () => hourHand.setAttribute('style', `transform: rotate(${90 + hour/12*360 + minute/60*30}deg)`);
+    setSecond();
+    setMinute();
+    setHour();
 
+    // every second, rotate second hand. every minute, rotate minute hand and hour hand
+    const tick = () => {
+      second = (second === 59) ? 0 : second + 1;
+      setSecond();
+      if (second === 0) {
+        minute = (minute === 59) ? 0 : minute + 1;
+        if (minute === 0) hour = (hour === 12) ? 1 : hour + 1;
+        setMinute();
+        setHour();
+      }
+    }
+
+    setInterval(tick, 1000);
 
   </script>
 </body>
