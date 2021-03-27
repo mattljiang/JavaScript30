@@ -90,9 +90,9 @@
     hour = Number(hour);
     minute = Number(minute);
     second = Number(second);
-    const setSecond = () => secondHand.setAttribute('style', `transform: rotate(${90 + second/60*360}deg)`);
-    const setMinute = () => minuteHand.setAttribute('style', `transform: rotate(${90 + minute/60*360}deg)`);
-    const setHour = () => hourHand.setAttribute('style', `transform: rotate(${90 + hour/12*360 + minute/60*30}deg)`);
+    const setSecond = () => secondHand.style.transform = `rotate(${90 + second/60*360}deg)`;
+    const setMinute = () => minuteHand.style.transform = `rotate(${90 + minute/60*360}deg)`;
+    const setHour = () => hourHand.style.transform = `rotate(${90 + hour/12*360 + minute/60*30}deg)`;
     setSecond();
     setMinute();
     setHour();
