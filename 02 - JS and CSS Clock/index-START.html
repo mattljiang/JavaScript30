@@ -64,6 +64,8 @@
       top: 50%;
       transform-origin: 100%;
       transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0, 2.96, 0.58, 1);
     }
     
     .second-hand {
@@ -97,7 +99,8 @@
 
     // every second, rotate second hand. every minute, rotate minute hand and hour hand
     const tick = () => {
-      second = (second === 59) ? 0 : second + 1;
+      // second = (second === 59) ? 0 : second + 1;
+      second = second + 1;
       setSecond();
       if (second === 0) {
         minute = (minute === 59) ? 0 : minute + 1;
