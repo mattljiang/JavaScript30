@@ -21,7 +21,26 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
 
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
+
+    /* you can put css variables in different scopes */
+    h2 {
+      --base: #bada55;
+    }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -45,6 +64,13 @@
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('.controls input');
+    inputs.forEach((input) => input.addEventListener('input', handleChange));
+    
+    function handleChange() {
+      const suffix = this.dataset.sizing || '';
+      document.documentElement.style.setProperty(`--${this.name}`, `${this.value}${suffix}`);
+    }
   </script>
 
 </body>
