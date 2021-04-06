@@ -15,7 +15,38 @@
     </ul>
   </form>
 <script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const cities = [];
+  const prom = fetch(endpoint)
+    .then(blob => blob.json())
+    .then(data => cities.push(...data));
+  const searchBar = document.querySelector('.search');
+  const suggestions = document.querySelector('.suggestions');
+  searchBar.addEventListener('input', displayMatches);
+
+  function findMatches(regex, cities) {
+    return cities.filter((place) => place.city.match(regex) || place.state.match(regex));
+  }
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  function displayMatches() {
+    const regex = new RegExp(this.value, 'gi');
+    const matches = findMatches(regex, cities);
+    const html = matches.map((place) => {
+      //? how does this.value have the correct capitalization (e.g. you type 'bos' but displayed is a highlighted 'Bos')?
+      const highlightCity = place.city.replace(regex, `<span class='hl'>${this.value}</span>`);
+      const highlightState = place.state.replace(regex, `<span class='hl'>${this.value}</span>`);
+      return `
+        <li>
+          <span class="name">${highlightCity}, ${highlightState}</span>
+          <span class="population">${numberWithCommas(place.population)}</span>
+        </li>
+      `
+    }).join('');
+    suggestions.innerHTML = html;
+  }
 
 </script>
 </body>
