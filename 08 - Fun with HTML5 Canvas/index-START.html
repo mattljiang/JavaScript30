@@ -3,50 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <title>HTML5 Canvas</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      text-align: center;
+    }
+    .box {
+      display: flex;
+      flex-flow: column;
+      height: 100%;
+      background-color: antiquewhite;
+    }
+    .box .row.header, .box .row.footer {
+      background-color: green;
+      color: white;
+    }
+    .box .row.header {
+      flex: 0 1 auto;
+    }
+    .box .row.content {
+      flex: 1 1 auto;
+      width: 90%;
+      margin: auto;
+      background-color: white;
+    }
+    .box .row.footer {
+      flex: 0 1 auto;
+    }
+    #draw {
+      border: 1px solid black;
+      margin: auto;
+      width: 1200;
+    }
+    #pickers {
+      width: max-content;
+      margin: auto;
+      text-align: left;
+    }
+  </style>
 </head>
 <body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-  const canvas = document.querySelector('#draw');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  ctx.strokeStyle = '#BADA55';
-  ctx.lineJoin = 'round';
-  ctx.lineCap = 'round';
-  ctx.lineWidth = 0;
-  ctx.globalCompositeOperation = 'multiply';
+  <div class="box">
+    <header class="row header">
+      <h1>GC Paint</h1>
+    </header>
+    <div class="row content">
+      <form id="pickers">
+        <label for="colorPicker">Color:</label>
+        <input type="color" id="colorPicker" name="colorPicker">
+        <br>
+        <label for="sizePicker">Size:</label>
+        <input type="range" min="1" max="100" value="10" class="slider" id="sizePicker">
+      </form>
+      <canvas id="draw" height="800" width="800"></canvas>
+    </div>
+    <footer class="row footer">
+      <h1>by Matt Jiang</h1>
+    </footer>  
+  </div>
 
-  let isDrawing = false;
-  let hue = 0;
+  <script>
+    /***Canvas***/
+    const canvas = document.querySelector('#draw');
+    const ctx = canvas.getContext('2d');
+    ctx.strokeStyle = '#BADA55';
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 1;
 
-  function draw(e) {
-    if (!isDrawing) return;
-    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.stroke();
-    [lastX, lastY] = [e.offsetX, e.offsetY];
-    (hue === 719) ? hue = 0 : hue += 1;
-    ctx.lineWidth = (hue <= 360 ? hue : 720 - hue) / 2;
-  }
+    let isDrawing = false;
+    let hue = '#000000';
+    let size = 10;
 
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mousedown', (e) => {
-    isDrawing = true;
-    [lastX, lastY] = [e.offsetX, e.offsetY];
-  });
-  canvas.addEventListener('mouseup', () => isDrawing = false);
-  canvas.addEventListener('mouseout', () => isDrawing = false);
+    function draw(e) {
+      if (!isDrawing) return;
+      ctx.strokeStyle = hue;
+      ctx.lineWidth = size;
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
 
-</script>
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseout', () => isDrawing = false);
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+    /***Pickers***/
+    const colorPicker = document.querySelector('#colorPicker');
+    colorPicker.addEventListener('change', changeColor);
+
+    function changeColor(e){
+      hue = e.target.value;
+    }
+
+    const sizePicker = document.querySelector('#sizePicker')
+    sizePicker.addEventListener('change', changeSize);
+
+    function changeSize(e){
+      console.log(e.target.value);
+      size = e.target.value;
+    }
+
+  </script>
 
 </body>
 </html>
