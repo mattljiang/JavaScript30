@@ -96,6 +96,39 @@
   </div>
 
 <script>
+  // How to get checkboxes in between previouslyChecked and current checkbox
+  // (1) give each checkbox a number. get all checkboxes and filter so it's only checkboxes in between two numbers
+  // (2!) get all checkboxes. iterate thru, when you hit previouslyChecked or current, then start checking everything until you hit the other
+
+  const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+  checkboxes.forEach((checkbox) => checkbox.addEventListener('click', check));
+  let previouslyChecked = null;
+
+  function check(e){
+    // uncheck
+    if (!e.target.checked) {
+      previouslyChecked = null;
+      return;
+    };
+    // if user is holding down shift and previouslyChecked exists, select all in between
+    if (e.shiftKey && previouslyChecked) {
+      let started = false;
+      for (let i = 0; i < checkboxes.length; i += 1) {
+        if (started) checkboxes[i].checked = true;
+        if (checkboxes[i] === previouslyChecked || checkboxes[i] === e.target) {
+          if (started) {
+            previouslyChecked = null;
+            break;
+          };
+          started = true;
+        }
+      }
+    } else {
+      // else, update previouslyChecked
+      previouslyChecked = e.target;
+    }
+  }
+
 </script>
 </body>
 </html>
