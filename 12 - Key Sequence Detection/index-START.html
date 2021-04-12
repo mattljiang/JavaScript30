@@ -7,6 +7,30 @@
 </head>
 <body>
 <script>
+  // detect key and add to key sequence. on last key, if key sequence is correct, do something.
+  // sequence has to be typed within certain time, so start new key sequence if too much time has passed
+  
+  /***My Solution***/
+  // const konamiCode = 'ArrowUpArrowRightArrowDownArrowLeft';
+  // let keySequence = '';
+  
+  // window.addEventListener('keyup', (e) => {
+  //   keySequence += e.key;
+  //   if (keySequence === konamiCode) alert('Konami Code Actviated!')
+  // })
+
+  /***Wes's Solution***/
+  const pressed = [];
+  const secretCode = 'wesbos';
+
+  window.addEventListener('keyup', (e) => {
+    pressed.push(e.key);
+    pressed.splice(0, pressed.length - secretCode.length);
+    // use array so you can always push out earlier keypresses
+    if (pressed.join('') === secretCode) {
+      cornify_add();
+    }
+  })
 </script>
 </body>
 </html>
