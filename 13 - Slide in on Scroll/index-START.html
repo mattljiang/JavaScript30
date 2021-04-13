@@ -58,6 +58,21 @@
       };
     }
 
+    // select elements
+    const sliderImages = document.querySelectorAll('.slide-in');
+    // write functions
+    function show(){
+      sliderImages.forEach((sliderImage) => {
+        if (sliderImage.getBoundingClientRect().top < window.innerWidth && sliderImage.getBoundingClientRect().left < window.innerHeight) {
+          sliderImage.classList.add('active');
+        }
+      })
+    }
+    // attach event listeners
+    // setTimeout(500, show);
+    // image positions are not correct on page load
+    show();
+    window.addEventListener('scroll', debounce(show));
   </script>
 
   <style>
