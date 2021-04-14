@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>JS Reference VS Copy</title>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 </head>
 <body>
 
@@ -65,6 +66,10 @@
     dev4.social.twitter = '@mattljiang!!';
     console.log(person, dev4)
 
+    // lodash    
+    const dev5 = _.cloneDeep(person);
+    dev5.social.twitter = '@mattljiang!!!!';
+    console.log(person, dev5);
   </script>
 
 </body>
