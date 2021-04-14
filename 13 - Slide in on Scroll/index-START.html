@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 </head>
 <body>
 
@@ -43,7 +44,7 @@
   </div>
 
   <script>
-    function debounce(func, wait = 10, immediate = true) {
+    function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
         var context = this, args = arguments;
@@ -62,16 +63,17 @@
     const sliderImages = document.querySelectorAll('.slide-in');
     // write functions
     /***my solution***/
-    function show(){
-      sliderImages.forEach((sliderImage) => {
-        if (sliderImage.getBoundingClientRect().top < window.innerWidth && sliderImage.getBoundingClientRect().left < window.innerHeight) {
-          sliderImage.classList.add('active');
-        }
-      })
-    }
+    // function show(){
+    //   sliderImages.forEach((sliderImage) => {
+    //     if (sliderImage.getBoundingClientRect().top < window.innerWidth && sliderImage.getBoundingClientRect().left < window.innerHeight) {
+    //       sliderImage.classList.add('active');
+    //     }
+    //   })
+    // }
 
     /***wes's solution***/
     function show(){
+      console.count('show');
       sliderImages.forEach(sliderImage => {
         // halfway thru image
         const slideInAt = (window.scrollY + window.innerHeight) - sliderImage.height / 2;
@@ -89,8 +91,8 @@
     // attach event listeners
     // setTimeout(500, show);
     // image positions are not correct on page load
-    show();
-    window.addEventListener('scroll', debounce(show));
+    // show();
+    window.addEventListener('scroll', _.debounce(show, 20));
   </script>
 
   <style>
